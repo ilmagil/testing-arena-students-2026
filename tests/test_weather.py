@@ -73,12 +73,14 @@ def test_filter_by_temperature_regular_values():
 
 def test_average_temperature_regular_values():
     measurements = [
-        ("Köln", 600, 10.0),
-        ("Köln", 720, 20.0),
+        ("Köln", 600, 15),
+        ("Köln", 720, 15),
     ]
 
     assert average_temperature(measurements, "Köln") == 15.0
 
+    with pytest.raises(ValueError, match= "No measurements found for city."):
+        average_temperature("Kölnfdsfd", 6)
 
 def test_hottest_measurement_with_unique_maximum():
     measurements = [
@@ -88,3 +90,6 @@ def test_hottest_measurement_with_unique_maximum():
     ]
 
     assert hottest_measurement(measurements) == ("Düsseldorf", 720, 25.0)
+
+    with pytest.raises(ValueError, match= "No measurements available."):
+        hottest_measurement("")
